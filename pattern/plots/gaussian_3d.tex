@@ -1,0 +1,18 @@
+\documentclass{standalone}
+\usepackage{pgfplots}
+
+\begin{document}
+	\pgfmathdeclarefunction{gauss3d}{5}{%
+		% #1, #2=mu    #3=sig_xx    #4=sig_xy   #5=sig_yy
+		\pgfmathparse{exp( -(#3*(x-#1)^2+2*#4*(y-#2)*(x-#1)+ #5*(y-#2)^2) )}%
+	  %\pgfmathparse{exp( -((x-#1)^2/(#3^2)+(y-#2)^2/(#4^2))/2 )}%
+	}
+	
+	\begin{tikzpicture}
+		\begin{axis}[hide axis,
+		enlargelimits=false, clip=false
+		] %[colormap/hot2]
+			\addplot3[ surf, domain=-3:3, samples=40, fill=white, faceted color=black] {gauss3d(0,0,1,0,1)};
+		\end{axis}
+	\end{tikzpicture}
+\end{document}

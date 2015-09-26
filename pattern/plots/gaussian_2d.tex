@@ -1,0 +1,52 @@
+\documentclass{standalone}
+\usepackage{pgfplots}
+\usetikzlibrary{patterns}
+
+\begin{document}
+
+	\pgfmathdeclarefunction{gauss}{3}{%
+		\pgfmathparse{1/(#3*sqrt(2*pi))*exp(-((#1-#2)^2)/(2*#3^2))}%
+	}
+	
+	\begin{tikzpicture}[scale=0.8]
+	\begin{axis}[
+	hide y axis,
+	no markers, domain=-4:4, samples=50,
+	axis lines*=left,
+	ymax=0.4,
+	% xlabel=$x$, ylabel=$y$,
+	height=5cm, width=10cm,
+	ytick=\empty,
+	xtick={-3, -2, ..., 3},
+	xticklabels={$-3\sigma$, $-2\sigma$, $-1\sigma$, $\mu$, $1\sigma$, $2\sigma$, $3\sigma$},
+	enlargelimits=false, clip=false%, axis on top
+	]
+		\tikzstyle{s1}=[];%[white, fill=gray!50!black], postaction={pattern=north east lines}];
+		\tikzstyle{s2}=[];%[white, fill=gray!70!black], postaction={pattern=north west lines}];
+		\tikzstyle{s3}=[];%[white, fill=gray!90!black], postaction={pattern=north east lines}];
+		\tikzstyle{s4}=[black];
+		
+		\addplot [s1, domain=-0:1] {gauss(x,0,1)} \closedcycle;
+		\addplot [s1, domain=-1:0] {gauss(x,0,1)} \closedcycle;
+		\addplot [s2, domain=1:2] {gauss(x,0,1)} \closedcycle;
+		\addplot [s2, domain=-2:-1] {gauss(x,0,1)} \closedcycle;
+		\addplot [s3, domain=2:3] {gauss(x,0,1)} \closedcycle;
+		\addplot [s3, domain=-3:-2] {gauss(x,0,1)} \closedcycle;	
+		\addplot [thick] {gauss(x,0,1)};
+		
+		\draw [densely dotted](axis cs:-2, 0.3) -- (axis cs:-2, 0);
+		\draw [densely dotted](axis cs:2, 0.3) -- (axis cs:2, 0);
+		\draw [yshift=1.8cm, latex-latex](axis cs:-1, 0) -- node [s1, fill=white, font=\footnotesize] {$0.683$} (axis cs:1, 0);
+		\draw [yshift=2.5cm, latex-latex](axis cs:-2, 0) -- node [s1, fill=white, font=\footnotesize] {$0.954$} (axis cs:2, 0);
+
+		\node at (axis cs:0.5,0.13) [s4] {$34.1\%$};
+		\node at (axis cs:-0.5,0.13) [s4] {$34.1\%$};
+		\node at (axis cs:1.5,0.05) [s4] {$13.6\%$};
+		\node at (axis cs:-1.5,0.05) [s4] {$13.6\%$};
+		\node at (axis cs:2.5,0.1) {$2.1\%$};
+		\node at (axis cs:-2.5,0.1) {$2.1\%$};
+		\node at (axis cs:3.5,0.07) {$0.1\%$};
+		\node at (axis cs:-3.5,0.07) {$0.1\%$};
+	\end{axis}
+	\end{tikzpicture}
+\end{document}

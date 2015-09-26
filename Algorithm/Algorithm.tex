@@ -1,0 +1,289 @@
+\documentclass{../cheat}
+\title{Foundations of Algorithms}
+\author{ma.mehralian}
+
+\begin{document}
+\begin{multicols}{3}
+\section{1- Algorithms: Efficiency, Analysis,... }
+	\textbf{Time Complexity Analysis:} In general, a time complexity analysis of an algorithm is the determination of how many times the basic operation is done for each value of the input size. 
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item Worst-Case Time Complexity Analysis
+		\item Average-Case Time Complexity Analysis
+		\item Best-Case Time Complexity Analysis 
+	\end{itemize}
+
+		\textbf{Order Definitions:}
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item \textbf{big O (asymptotic upper bound):} For a given complexity function $f(n)$, $O(f(n))$ is the set of complexity functions $g(n)$ for which there exists some positive real constant $c$ and some nonnegative integer $N$ such that for all $n \geq N$ \\ $g(n) \leq c*f(n). $
+		
+		\item \textbf{$\Omega$ (an asymptotic lower bound):} For a given complexity  function $f(n)$, $\Omega(f(n))$ is the set of complexity functions $g(n)$ for which there exists some positive real constant $c$ and some nonnegative integer $N$ such that, for all $n \geq N$\\ $g(n) \geq c*f(n)$.
+	
+		\item \textbf{$\Theta$:} For a given complexity function $f(n)$, $\Theta(f(n)) = O(f(n)) \cap \Omega(f(n))$. 
+	This means that $\Theta(f(n))$ is the set of complexity functions $g(n)$ for which there exists some positive real constants $c$ and $d$ and some nonnegative integer $N$ such that, for all $n \geq N$, \\
+	$c*f(n) \leq g(n) \leq d*f(n)$. 
+	
+	
+		\item \textbf{small o:} For a given complexity function $f(n)$, $o(f(n))$ is the set of all complexity functions g(n) satisfying the following:
+		For every positive real constant $c$ there exists a nonnegative integer $N$ such that, for all $n \geq N$, 
+		$g(n) \leq c*f(n)$.
+		
+		\item The most common complexity categories:\\
+		\centerline{$O(\log n) < O(n) < O(n \log n) < O(n^i) < O(i^n) $}
+	\end{itemize}
+	
+
+
+\section{2-Divide-and-Conquer}
+	%\subsection{Binary Search}
+		\textbf{Binary Search:}
+		\begin{itemize}
+			\item Binary Search locates a key $x$ in a sorted array.
+			\item The steps of Binary Search:
+			\begin{itemize}[nolistsep, leftmargin=1em]
+				\item \textbf{Divide:} the array into two subarrays.
+				\item \textbf{Conquer:} (solve) the subarray by determining whether $x$ is in that subarray.
+				\item \textbf{Obtain:} the solution to the array from the solution to the subarray. 
+			\end{itemize}
+			\item Binary Search does not have an every-case time complexity. 
+			\item Worst-Case Time Complexity\\
+				\centerline{ $W(n) = \lfloor \log n \rfloor + 1 \in \Theta(\log n)$ }
+		\end{itemize}
+
+	%\subsection{Mergesort}
+		\textbf{Mergesort:}
+		\begin{itemize}
+			\item By repeatedly combining two sorted arrays into one %sorted array. 
+			\item The steps of Mergesort:
+			\begin{itemize}[nolistsep, leftmargin=1em]
+				\item \textbf{Divide:} the array into two subarrays.
+				\item \textbf{Conquer:} (solve) each subarray by sorting it. 
+				\item \textbf{Combine:} the solutions to the subarrays by merging them into a single sorted 
+		array.
+			\end{itemize}
+			\item Worst-Case Time Complexity\\
+				\centerline{ $W(n) \in \Theta(n \log n)$ }
+			\item Mergesort is not an in-place sort (An \textbf{in-place sort} is a sorting algorithm that does not use any extra space beyond that needed to store the input).
+			\item Mergesort-2 is the in-place version of Mergesort.
+		\end{itemize}
+
+	
+%	The steps of general divide-and-conquer:
+%	\begin{itemize}[nolistsep, leftmargin=1em]
+%		\item \textbf{Divide:} 
+%		\item \textbf{Conquer:} 
+%		\item \textbf{Combine:} 
+%	\end{itemize}	
+	
+	%\subsection{Quicksort}
+		\textbf{Quicksort}
+		\begin{itemize}
+			\item Quicksort is similar to Mergesort
+			\item The array is partitioned by placing all items smaller than some pivot item before that item and all items larger than or equal to the pivot item after it. 
+			\item Quicksort does not have an every-case complexity.
+			\item Worst-Case Time Complexity\\
+				\centerline{ $W(n) = \frac{n(n-1)}{2} \in \Theta(n^2) $ }
+			\item Average-Case Time Complexity \\
+				\centerline{ $A(n) \approx (n + 1)2 \text{In}\; n = (n + 1)2(\text{ln}\; 2)(\text{lg}\; n) \in \Theta(n \text{lg}\; n)$}
+		\end{itemize}
+
+		
+		
+	%\subsection{Strassen's Matrix Multiplication}
+	\textbf{Strassen's Matrix Multiplication}
+	\begin{itemize}
+		\item Complexity of standard matrix multiplication:\\
+		Multiplications: $T(n)=n^3$ \hfill Additions: $T(n)=n^3-n^2$
+		\item Every-Case Time Complexity: \\
+			Multiplications: $T(n) = 7T(\frac{n}{2}) = n^{\text{lg}\;7} \quad \in \Theta(n^{2.81})$\\
+			Additions: $T(n) = 7T(\frac{n}{2}) + 18T(\frac{n}{2})^2 = 6n^{\text{lg}\;7}-6n^2 \in \Theta(n^{2.81})$
+	\end{itemize}
+	
+	%\subsection{Arithmetic With Large Integers}
+	\textbf{Arithmetic With Large Integers}
+	\begin{itemize}
+		\item Split an n-digit integer into two integers of approximately $n/2$ digits.\\
+			\centerline{$\underbrace{u}_{n \; \text{digits}} =
+				\underbrace{x}_{\lceil n/2 \rceil \text{digits}} \times 10^m + \underbrace{y}_{\lfloor n/2 \rfloor \text{digits}} 
+				;\quad m=\lfloor n/2 \rfloor $}
+		\item Worst-Case Time Complexity\\
+			(1): $W(n)=4W(\frac{n}{2})+cn \in \Theta(n^{\text{lg}4})=\Theta(n^2)$\\
+			(2): $W(n) \in \Theta(N^{\log_2^3}) \approx \Theta(N^{1.58})$
+	\end{itemize}
+	
+
+	%\subsection{Determining Thresholds}
+	\textbf{Determining Thresholds}
+	\begin{itemize}
+		\item Determines for what values of $n$ it is at least as fast to call an alternative algorithm as it is to divide the instance further.
+		\item To determine a threshold, we must consider the computer on which the algorithm is implemented. 
+	\end{itemize}
+	
+	
+\section{3-Dynamic Programming}
+	The steps of Dynamic Programming
+		\begin{itemize}[nolistsep, leftmargin=1em]
+		\item \textit{Establish} a recursive property that gives the solution to an instance of the problem. 
+		\item Solve an instance of the problem in a \textit{bottom-up} fashion by solving smaller instances first. 
+	\end{itemize}	
+	
+	%\subsection{The binomial coefficient}
+	 \textbf{Binomial Coefficient}
+	 \begin{itemize}
+	 	\item Equation: \\ \centerline{
+			$\left( {\begin{array}{*{20}c} n \\ k \\ \end{array}} \right)=
+			\frac{n!}{k!(n-k)!} \quad \text{for}\; 0 \leq k \leq n.$}
+		\item Recursive binomial coefficient:\\
+			$ \left( {\begin{array}{*{20}c} n \\ k \\ \end{array}} \right)=
+			\left\{ \begin{array}{c l}
+				\begin{pmatrix}n-1 \\ k-1 \end{pmatrix}+\begin{pmatrix}n-1 \\ k \end{pmatrix} & 0<k<n\\
+				1 & k=0 \; \text{or} \; k=n\\
+			\end{array} \right.$
+		\item The total number of passes $\in \Theta(nk)$
+	 \end{itemize}
+		
+	
+
+	%\subsection{Floyd's Algorithm for Shortest Paths}
+	\textbf{Floyd's Algorithm for Shortest Paths:}
+		Finding the shortest paths from each vertex to all other vertices in a weighted digraph
+		
+		
+		\begin{itemize}
+			\item Create adjacency matrix representation of the graph ($W$)
+			\item Set $D^{(0)}=W$ and compute $D^{(k)}$ from $D^{(k-1)}$. 
+			\item Select All shortest paths from $v_i$ to $v_j$ using only vertices in $[v_1, v_2, \ldots, v_k]$ as intermediate vertices
+			\item Every-Case Time Complexity: $T(n) \in \Theta(n^3)$
+		\end{itemize}
+		
+	%\subsection{Chained Matrix Multiplication}
+	\textbf{Chained Matrix Multiplication}
+	\begin{itemize}
+		\item Optimal order to multiply $n$ matrices
+		\item Every-Case Time Complexity: $T(n) \in \Theta(n^3)$
+	\end{itemize}
+
+	
+	%\subsection{Optimal Binary Search Trees}
+	\textbf{Optimal Binary Search Trees}
+	\begin{itemize}
+		\item A binary search tree
+			\begin{itemize}
+				\item Each node contains one key.
+				\item The keys in the left subtree of a given node are less than or equal to the key in that node.
+				\item The keys in the right subtree of a given node are greater than or equal to the key in that node.
+			\end{itemize}
+		\item Determine an optimal binary search tree for a set of keys, each with a given probability of being the search key. 
+		\item Every-Case Time Complexity: $T(n) \in \Theta(n^3)$
+	\end{itemize}
+	
+	
+
+	%\subsection{The Traveling Salesperson Problem}
+	\textbf{The Traveling Salesperson Problem}
+	\begin{itemize}
+		\item A tour (also called a \textbf{Hamiltonian Circuit}) in a directed graph is a path from a vertex to itself that passes through each of the other vertices exactly once.
+		\item An optimal tour in a weighted, directed graph is such a path of minimum length.
+		\item The Traveling Salesperson Problem is to find an optimal tour in a weighted, directed graph when at least one tour exists.
+		\item Every-Case Time and Space Complexity:\\
+			\centerline{$T(n) \in \Theta(n^2 2^n), \quad M(n) \in \Theta(n 2^n)$}
+	\end{itemize}
+	 
+	
+	 
+	
+	 
+	
+\section{4-The Greedy Approach}
+	A greedy algorithm arrives at a solution by making a sequence of choices, each of which simply looks the best at the moment. 
+	%\subsection{Minimum Spanning Trees}
+	\textbf{Minimum Spanning Trees}
+	\begin{itemize}
+		\item A spanning tree for G is a connected subgraph that contains all the vertices in G and is a tree.
+		\item Prim's Algorithm $T(n) \in \Theta(n^2)$
+			\begin{itemize}
+				\item Select an arbitrary vertex. 
+				\item Add nearest vertices
+				\item ...
+			\end{itemize}
+		\item Kruskal's Algorithm $W(m,n) \in \Theta(m\; \text{lg} \; m) \text{and} \in \Theta(n^2\; \text{lg} \; n)$\\
+		\centerline{where \quad $(n - 1) \leq m \leq \frac{n(n - 1)}{2}$}
+		\begin{itemize}
+			\item Sort the edges in E in nondecreasing order
+			\item ....
+			\item For a graph whose number of edges $m$ is near the low end of these limits (the graph is very sparse) Kruskal's Algorithm is $\Theta(n\; \text{lg} \; n)$
+			\item For a graph whose number of edges is near the high end (the graph is highly connected), Kruskal's Algorithm is $ \Theta(n^2\; \text{lg} \; n)$, which means that Prim's Algorithm should be faster. 
+		\end{itemize}
+
+	\end{itemize}
+	 
+
+	%\subsection{Dijkstra's Algorithm}
+	\textbf{Dijkstra's Algorithm}
+	\begin{itemize}
+		\item Determine the shortest paths from Uj to all other vertices in a weighted, directed graph. 
+		\item $T(n) = 2(n - 1)^2 \in \Theta(n^2)$	
+	\end{itemize}
+
+
+	%\subsection{Scheduling}
+	\textbf{Scheduling}
+	\begin{itemize}
+		\item \textit{Minimizing Total Time in the System:} Schedule the customers in such a way as to minimize the total time they spend both waiting and being served (getting treated).
+		\item sort the jobs by service time in nondecreasing order
+		\item ...
+		\item Worst-Case Time Complexity: $W(n) \in \Theta(n \;\text{lg}\; n)$
+		\item sort the jobs in nonincreasing order by profit
+		\item ...
+		\item \textit{Scheduling with Deadlines:} Determine the schedule with maximum total profit given that each job has a profit that will be obtained only if the job is scheduled by its deadline. 
+		\item Worst-Case Time Complexity : $W(n) \in \Theta(n^2)$
+	\end{itemize}
+	
+	%\subsection{Greedy vs Dynamic Programming}
+	\textbf{Greedy vs Dynamic Programming} ...
+	
+	
+\section{5-Backtracking}
+	\begin{itemize}
+		\item Backtracking is a modified depth-first search of a tree.
+		\item We call a node \textbf{nonpromising} if when visiting the node we determine that it cannot possibly lead to a solution. Otherwise, we call it \textbf{promising}. 
+		\item Backtracking consists of doing a depth-first search of a state space tree, checking whether each node is promising, and, if it is nonpromising, backtracking to the node's parent.
+	\end{itemize}
+	
+	\textbf{The n-Queens Problem :}
+	Position $n$ queens on a chessboard so that no two are in the same row, column, or diagonal. 
+ 
+	\textbf{Monte Carlo Estimate:} Estimate the efficiency of a backtracking algorithm using a Monte Carlo algorithm.
+	\begin{itemize}
+		\item In each level let $m_i$ be the number of promising children of the level. Then randomly generate a promising child of the node obtained in the level and go to the nest level.
+		\item This process continues until no promising children are found. 
+	\end{itemize} 
+
+	
+	\textbf{The Sum-of-Subsets Problem:}
+	Given $n$ positive integers (weights) and a positive integer $W$, determine all combinations of the integers that sum to $W$. 
+	
+	\textbf{Graph Coloring:}
+	finding all ways to color an undirected graph using at most $m$ different colors, so that no two adjacent vertices are the same color.  
+	
+	\textbf{The Hamiltonian Circuits Problem:}
+	Determine all Hamiltonian Circuits in a connected, undirected graph.
+	
+	\textbf{The 0-1 Knapsack Problem:}
+	Let $n$ items be given, where each item has a weight and a profit. The weights and profits are positive integers. Furthermore, let a positive integer $W$ be given. Determine a set of items with maximum total profit, under the constraint that the sum of their weights cannot exceed $W$. 
+
+	
+	
+% You can even have references
+\vspace{5mm}
+\rule{0.3\linewidth}{0.25pt}
+\scriptsize
+
+\textbf{References:}
+\begin{itemize}[leftmargin=2em]
+	\item [{[1]}] Foundations of Algorithms, by Richard E. Neapolitan and Kumarss Naimipour 
+
+\end{itemize}
+Made by \href{http://webpages.iust.ac.ir/mehralian/}{ma.mehralian} using \LaTeX
+\end{multicols}
+
+\end{document}

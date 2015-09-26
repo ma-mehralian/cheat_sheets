@@ -1,0 +1,442 @@
+\documentclass{../cheat}
+\title{Artificial Intelligence}
+\author{ma.mehralian}
+
+\begin{document}
+\begin{multicols}{3}
+	\section{Chapter 2: Intelligent Agents}
+	
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item An \textbf{agent} is anything that can be viewed as perceiving its environment through sensors and acting upon that environment through actuator.
+		\item A \textbf{rational agent} chooses whichever action maximizes the expected value of the performance measure given the percept sequence to date.
+		\item An agent is \textbf{autonomous} if its behaviour is determined by its own experience (ability to learn and adapt).
+		\item To design a rational agent, we must specify the task environment: \textbf{PEAS} (Performance measure, Environment, Actuators, Sensors)
+	\end{itemize}
+
+	\textbf{Environment types:}
+	\begin{enumerate}
+		\item Fully observable (vs. partially observable)
+		\item Deterministic (vs. stochastic)
+			\item [-] If the environment is deterministic except for the actions of other agents, then the environment is strategic.
+		\item Episodic (vs. sequential)
+		\item Static (vs. dynamic)
+			\item [-] the environment is semi-dynamic if the environment itself does not change with the passage of time but the agent’s performance score does
+		\item Discrete (vs. continuous)
+		\item Single agent (vs. multiagent)
+	\end{enumerate}
+	
+	\textbf{Agent types:}
+	\begin{itemize}
+		\item \textbf{Look Up Table} (Dr.)
+			\item [-] Benefits: Easy to implement 
+			\item [-] Drawbacks: Huge table, Take a long time to build the table, No autonomy, Even with learning, need a long time to learn the table entries
+		\item\textbf{Simple reflex agents:} based on current percept ignoring percept history
+			\item [-] Selection based on condition-action rules.
+			\item [-] Advantage: Simplicity, requires only limited resources.
+			\item [-] Drawback: It only works if the environment is fully observable
+		\item \textbf{Reflex agents with state (Model-based):} Agent uses model of the world around it to keep track of the parts of the worlds it can not always see
+		\item \textbf{Goal-based agents}: Knowing about the current state of the environment is not always enough to decide what to do
+			\item [-] Goal information can ease the action selection process.
+			\item [-] Goal-based selection can be straightforward or can involve planning
+		\item \textbf{utility-based agents}: Utility-related considerations can ease the selection of optimal action sequences.
+			\item [-] Utility function: 
+				\checkmark Maps state (sequence of states) into a real number
+				\checkmark Resolves contradictions through trade-offs
+				\checkmark Resolves uncertainty through measure for likelihood of success
+		\item \textbf{Learning Agents}\\
+		All these can be turned into learning agents
+	\end{itemize}
+
+
+	\section{Chapter 3: Search}
+	A \textbf{strategy} is defined by picking the order of node expansion
+	
+	- Strategies are evaluated along the following dimensions:
+	\begin{itemize}
+		\item \textbf{Completeness:} Does it always find a solution if one exists?
+		\item \textbf{Time complexity:} Number of nodes generated/expanded
+		\item \textbf{Space complexity:} Maximum number of nodes in memory
+		\item \textbf{Optimality:} Does it always find a least-cost solution?
+	\end{itemize}
+	
+	
+	Time and space complexity are measured in terms of (Dr.)
+	\begin{itemize}
+		\item \textbf{b:} Maximum branching factor of the search tree
+		\item \textbf{d:} Depth of the least-cost solution
+		\item \textbf{m:} Maximum depth of the state space (may be $\infty$)
+	\end{itemize}
+	
+	\textbf{Search Types:}
+	\begin{itemize}
+		\item \textbf{Uninformed:} The agent has no information about the underlying problem other than its definition. e.g. Breadth-first, Uniform-cost, Depth-first, Depth-limited, Iterative deepening
+		\item \textbf{Informed:} The agent have some idea of where to look for solutions
+	\end{itemize}
+	
+	\textbf{Tree search algorithms:} offline, simulated exploration of state space by generating successors of already-explored states
+	\begin{itemize}
+		\item Breadth-first search{\tiny (BFS)}:Expand shallowest unexpanded node.
+		\item Uniform-cost search{\tiny (UCS)}: Expand least-cost unexpanded node.
+		\item Depth-first search{\tiny (DFS)}: Expand deepest unexpanded node
+		\item Depth-limited search{\tiny (DLS)}: depth-first search with depth limit $l$
+		\item Iterative deepening search{\tiny (IDS)}: 
+	\end{itemize}
+
+	\centerline{
+	\begin{tabular}{|l|cccc|}
+		\hline
+		Criterion: & Complete? & Time & Space & Optimal?  \\
+		\hline
+		BFS	& Yes$^1$	& O($b^{d+1}$) & O($b^{d+1}$) & Yes$^2$\\
+		UCS	& Yes$^3$	& O($b^{\lceil \frac{c^*}{\epsilon} \rceil}$) & O($b^{\lceil \frac{c^*}{\epsilon} \rceil}$) & Yes$^4$  \\
+		DFS 	& No$^5$	& O($b^{m}$)	& O($bm$)	& No\\
+		DLS	& No			& O($b^{l}$)	& O($bl$)		& No\\
+		IDS	& Yes		& O($b^{d}$)	& O($bd$)		& Yes\\
+		\hline
+	\end{tabular}}
+	
+		
+%	\centerline{
+%	\begin{tabular}{|l|ccccc|}
+%		\hline
+%		Criterion & BFS & UCS & DFS & DLS & IDS \\
+%		\hline
+%		Complete? & Yes$^1$ & Yes$^3$ & No$^5$ & No & Yes \\
+%		Time & O($b^{d+1}$) & O($b^{\lceil \frac{c^*}{\epsilon} \rceil}$) & O($b^{m}$) & O($b^{l}$) & O($b^{d}$) \\
+%		Space & O($b^{d+1}$) & O($b^{\lceil \frac{c^*}{\epsilon} \rceil}$) & O($bm$) & O($bl$) & O($bd$) \\
+%		Optimal? & Yes$^2$ & Yes$^4$ & No & No & Yes \\
+%		\hline
+%	\end{tabular}}
+	\begin{enumerate}
+		\item if $b$ is finite
+		\item if cost = 1 per step
+		\item if step cost $\geq \epsilon$
+		\item nodes expanded in increasing order of $g(n)$
+		\item fails in infinite-depth spaces
+	\end{enumerate}
+	
+
+
+
+
+
+	\section{Chapter 4: Informed search}
+		\textbf{Best-first search:} Expand most desirable unexpanded node\\
+		Special cases: greedy search, A* search
+		
+		\textbf{Greedy best-first search:} expands the node that appears to be closest to goal
+		
+		\textbf{$A^*$ Search:} avoid expanding paths that are already expensive 
+		Evaluation function $f(n) = g(n) + h(n)$
+		\begin{itemize}
+			\item $g(n)$ = cost so far to reach $n$
+			\item $h(n)$ = heuristic, estimated cost to goal from $n$
+			\item $f(n)$ = estimated total cost of path through $n$ to goal
+			\item $A^*$ search uses an \textbf{admissible} heuristic i.e., $h(n) \leq h^*(n)$ where $h^*(n)$ is the \textbf{true cost} from $n$.
+		\end{itemize}
+		
+	\centerline{
+	\begin{tabular}{|l|cccc|}
+		\hline
+		Criterion: & Complete? & Time & Space & Optimal?  \\
+		\hline
+		Greedy	& No$^1$	& O($b^{m}$) & O($b^{m}$) & No\\
+		$A^*$	& Yes		& exp & all nodes & Yes  \\
+		\hline
+	\end{tabular}}
+	\begin{enumerate}
+		\item can get stuck in loops.
+	\end{enumerate}
+		
+		
+		\textbf{Local search algorithms}
+		\begin{itemize}
+			\item When path doesn't matter (e.g., optimization problems).
+			\item keep a single "current" state, try to improve it.
+			\item \textbf{Two key advantages:}
+				\begin{enumerate}
+					\item they use very little memory – usually a constant amount.
+					\item they can often find reasonable solutions in large or infinite (continuous) state spaces
+				\end{enumerate}
+		\end{itemize}
+
+		\textbf{Hill-climbing search problem:}
+		1- Local maximum
+		2- Plateau (resulting in a random walk)
+		3- Ridges (slopes very gently toward a peak)
+		
+		SOLUTION: Random restart hill-climbing
+		
+		\textbf{Simulated Annealing:}
+		\begin{itemize}
+			\item Escape local maxima by allowing some "bad" moves but gradually decrease their \textbf{size} and \textbf{frequency}.
+			\item Probability of a move decreases with the amount $\Delta E$ by which the evaluation is worsened.
+			\item high $T$ allows more worse moves, $T$ close to zero results in few or no bad moves.
+			\item One can prove: If $T$ decreases slowly enough, then simulated annealing search will find a global optimum with probability approaching $1$.
+			\item Widely used in VLSI layout, airline scheduling, etc.
+		\end{itemize}
+
+		
+		\textbf{Local beam search:}
+		\begin{itemize}
+			\item Keep track of $k$ states rather than just one.
+			\item Start with $k$ randomly generated states.
+			\item At each iteration, all the successors of all $k$ states are generated.
+			\item If any one is a goal state, stop; else select the $k$ best successors from the complete list and repeat.		
+		\end{itemize}
+		 
+		 \textbf{Genetic algorithms}
+		 \begin{itemize}
+			\item A successor state is generated by combining two parent states.
+			\item Start with $k$ randomly generated states (\textbf{population}).
+			\item A state is represented as a string over a finite alphabet (often a string of 0s and 1s).
+			\item Evaluation function (\textbf{fitness function}): Higher values for better states.
+			\item Produce the next generation of states by \textbf{selection}, \textbf{crossover}, and \textbf{mutation}.
+		 \end{itemize}
+
+	\section{Chapter 5: CSP}
+		Constraint satisfaction problems (CSPs)\\
+		  - Backtracking search\\
+		  - Local search
+		
+		Example Problems:\\
+		  - Map Coloring\\
+		  - 8-queens\\
+		  - Course/room scheduling\\
+		  - Cryptarithmetic\\
+		  - Line Labeling
+		
+		General-purpose CSP algorithms use the graph structure
+		
+		\textbf{Standard search formulation (incremental)}
+		\begin{itemize}
+			\item \textbf{Initial state}: the empty assignment
+			\item \textbf{Successor function}: assign a value to an unassigned variable that does not conflict with current assignment
+			\item \textbf{Goal test}: the current assignment is complete.		
+		\end{itemize}
+
+		\subsection{Backtracking search for CSPs}
+		\textbf{Backtracking search}
+		\begin{itemize}
+			\item Depth-first search for CSPs with single-variable assignments is called backtracking search.
+			\item Backtracking search is the basic uninformed algorithm for CSPs.
+			%\item Only need to consider assignments to a single variable at each node.
+		\end{itemize}
+		
+		\textbf{How to Improve}
+		\begin{itemize}
+			\item Which variable should be assigned next?
+			\item In what order should its values be tried?
+			\item Can we detect inevitable failure early?
+		\end{itemize}
+		\begin{itemize}
+			\item [\checkmark] \textbf{Minimum remaining values (MRV)}: choose the variable with the fewest legal values.
+			\item [\checkmark] \textbf{Most Constraining Variable (MCS)}: choose the variable with the most constraints on remaining variables
+			\item [\checkmark] \textbf{Least Constraining Value (LCS)}: To choose a value which puts minimum constraint on other variables.
+		\end{itemize}
+		
+		\textbf{Forward checking} prevents assignments that guarantee later failure\\
+		\textbf{Constraint propagation} (e.g., \textbf{arc consistency}) does additional work to constrain values and detect inconsistencies.
+		
+		\subsection{Local search for CSPs}
+		???			
+
+	\section{Chapter 6: Adversarial Search (Games)}
+		\textbf{"Game" in AI:}
+		\begin{itemize}
+			\item A multi-agent, non-cooperative environment
+			\item Zero Sum Result
+			\item Turn Taking
+			\item Deterministic
+			\item Two Player
+		\end{itemize}
+		
+		\textbf{Games vs. search problems}
+		\begin{itemize}
+			\item "Unpredictable" opponent $\rightarrow$ specifying a move for every possible opponent reply.
+			\item Time limits $\rightarrow$ unlikely to find goal, must approximate
+		\end{itemize}
+		
+		\textbf{Minimax}
+		\begin{itemize}
+			\item Perfect play for deterministic games
+			\item Idea: choose move to position with highest \textbf{minimax value} = best achievable payoff against best play
+		\end{itemize}
+		\centerline{
+		\begin{tabular}{|l|cccc|}
+			\hline
+			Criterion: & Complete? & Time & Space & Optimal?  \\
+			\hline
+			Minimax		& Yes$^1$	& O($b^{m}$) & O($bm$) & Yes$^2$\\
+			\hline
+		\end{tabular}}
+		\begin{enumerate}
+			\item if tree is finite
+			\item against an optimal opponent
+		\end{enumerate}
+		
+		\textbf{$\alpha-\beta$ pruning}
+		\begin{itemize}
+			\item $\alpha$: minimal score that player MAX is guaranteed to attain.
+			\item $\beta$: maximum score that player MAX can hope to obtain.
+			\item It is important to note that we now have a Max-Value Function and a Min-Value Function 
+		\end{itemize}
+		
+		\textbf{Algorithm}
+		\begin{enumerate}
+			\item Search down the tree to the given depth. 
+			\item Once reaching the bottom, calculate the evaluation for this node.(i.e. it's utility).
+			\item Backtrack, propagating values and paths (according to what shown in next slides).
+			\item When the search is complete, the Alpha value at the top node gives the minimum score that the player is guaranteed to attain if using the path stored at the top node.
+		\end{enumerate}
+		
+		\textbf{Properties of $\alpha-\beta$ pruning}
+		\begin{itemize}
+			\item Pruning does not affect final result
+			\item With "perfect ordering," time complexity = $O(b^{m/2})$
+		\end{itemize}
+	
+	
+ 	\section{Chapter 7: Logical Agents} 
+		Logical agents apply inference to a knowledge base to derive new information and make decisions
+		
+ 		\textbf{Knowledge base:} set of sentences in a formal language
+ 		
+ 		\textbf{Logic in general}
+ 		\begin{itemize}
+ 			\item \textbf{Logics} are formal languages for representing information such that conclusions can be drawn.
+ 			\item \textbf{Syntax} defines the sentences in the language.
+ 			\item \textbf{Semantics} define the "meaning" of sentences (i.e., define truth of a sentence in a world).
+ 		\end{itemize}
+ 		
+ 		\textbf{Inference:}
+ 		\begin{itemize}
+ 			\item \textbf{Entailment} means that one thing follows from another:  KB $\models \alpha$.
+ 			\item Entailment is a relationship between sentences (i.e., syntax) that is based on semantics.
+ 			\item KB $\vdash_i \alpha$:  $i$ derives $\alpha$ from KB.
+ 			\item An argument is \textbf{sound} if and only if 1-The argument is valid. 2-All of its premises are true.
+ 			\item \textbf{Completeness} ???
+ 		\end{itemize}
+ 		
+ 		Propositional logic is the simplest logic--illustrates basic ideas
+ 		\centerline{
+ 		\begin{tabular}{|c|c|c|c|c|c|}
+ 			\hline
+ 			$P$ & $Q$ & $P \vee Q$ & $P \wedge Q$ & $P \Rightarrow Q$ & $P \Leftrightarrow Q$ \\
+ 			\hline
+ 			0 & 0 & 0 & 0 & 1 & 1 \\
+ 			0 & 1 & 1 & 0 & 1 & 0 \\
+ 			1 & 0 & 1 & 0 & 0 & 0 \\
+ 			1 & 1 & 1 & 1 & 1 & 1 \\
+ 			\hline
+ 		\end{tabular}}
+ 		
+ 		\begin{itemize}
+ 			\item $(P \Rightarrow Q) \equiv (\neg P \vee Q)$
+ 			%\item [-] logically equivalent  in \LaTeX
+ 			\item A sentence is \textbf{valid} if it is true in all models
+ 			\item \textbf{Deduction Theorem:} KB $\models \alpha$ if and only if (KB $\Rightarrow \alpha$) is valid
+ 			\item A sentence is \textbf{satisfiable} if it is true in some model.
+ 			\item A sentence is \textbf{unsatisfiable} if it is true in no models.
+
+ 		\end{itemize}
+ 		
+ 		\textbf{Reasoning patterns} (inference rules:)
+ 		\begin{itemize}
+ 			\item Modus Ponens
+ 				$\frac{ \alpha \Rightarrow \beta, \quad \alpha}{ \beta }$
+ 			\item And-Elimination, And-Introduction, Or-Introduction, Double Negation-Elimination
+ 			\item Unit Resolution
+		 		$\frac{ \alpha \vee \beta, \quad \neg \beta}{\alpha}$
+ 			\item Resolution
+		 		$\frac{\alpha \vee \beta, \quad \neg \beta \vee \gamma }{\alpha \vee \gamma}$ or equivalently
+		 		$\frac{\neg \alpha \Rightarrow \beta, \quad \beta \Rightarrow \gamma }{\neg \alpha \Rightarrow \gamma}$
+ 		\end{itemize}
+  		
+  		\textbf{Normal forms}
+  		\begin{itemize}
+  			\item Conjunctive Normal Form (CNF):\\
+  				\centerline{$(A \vee \neg B) \wedge (B \vee \neg C \vee \neg D)$}
+  			\item Disjunctive Normal Form (DNF):\\
+  				\centerline{$(A \wedge B) \vee (A \wedge \neg C) \vee (A \wedge B \wedge \neg C)$}
+  			\item Horn form: conjunction of Horn clauses (a clause (a disjunction of literals) with at most one positive literal).\\
+  				\centerline{$(A \vee \neg B) \wedge (B \vee \neg C \vee \neg D)$}
+  		\end{itemize}
+ 		
+ 		\textbf{Proof methods}
+ 		\begin{itemize}
+ 			\item Application of inference rules:
+ 			\begin{itemize}
+ 				\item Legitimate (sound) generation of new sentences from old
+ 				\item a sequence of inference rule applications 
+ 				\item Typically require transformation of sentences into a normal form 
+ 			\end{itemize}
+ 			\item Model checking:
+ 			\begin{itemize}
+ 				\item truth table enumeration ($O(2^n)$ for $n$ symbols;).
+ 				\item improved backtracking
+ 				\item heuristic search in model space
+ 			\end{itemize}
+ 		\end{itemize}
+ 		
+ 		\textbf{Resolution}
+ 		\begin{itemize}
+ 			\item Resolution inference rule  ???????????
+ 			\item Resolution is sound and complete for propositional logic 
+  		\end{itemize}
+
+		
+		\textbf{Modus Ponens} (for Horn Form): complete for Horn KBs
+		\begin{itemize}
+ 			\item Can be used with forward chaining or backward chaining.
+			\item These algorithms are very natural and run in linear time			
+		\end{itemize}
+
+  		Forward vs. backward chaining:
+ 		\begin{itemize}
+ 			\item FC is data-driven, automatic, unconscious processing
+ 			\item BC is goal-driven, appropriate for problem-solving
+ 			\item Complexity of BC can be much less than linear in size of KB
+ 		\end{itemize}
+ 		
+ 		Efficient propositional inference\\
+ 		Complete backtracking search algorithms
+ 		\begin{itemize}
+ 			\item DPLL algorithm (Davis, Putnam, Logemann, Loveland)
+ 			\item Incomplete local search algorithms (e.g., WalkSAT algorithm)
+ 		\end{itemize}
+
+
+		Propositional logic has very limited expressive power 
+
+ 		
+	\section{Chapter 8: First-Order Logic}
+	\textbf{First-order logic}
+	\begin{itemize}
+		\item Whereas propositional logic assumes the world contains facts, first-order logic (like natural language) assumes the world contains:
+		\begin{itemize}
+			\item \textbf{Objects:} people, houses, numbers, ...
+			\item \textbf{Relations:} red, round, prime, brother of, ...
+			\item \textbf{Functions:} father of, best friend, plus, ...
+		\end{itemize}
+	\end{itemize}
+
+
+
+	
+	\section{Chapter 9: Inference in first-order logic}
+  
+% You can even have references
+\vspace{5mm}
+\rule{0.3\linewidth}{0.25pt}
+\scriptsize
+
+\textbf{References:}
+\begin{itemize}[leftmargin=2em]
+	\item [{[1]}] Artificial Intelligence A Modern Approach, by Stuart Russell and Peter Norving 
+
+\end{itemize}
+Made by \href{http://webpages.iust.ac.ir/mehralian/}{ma.mehralian} using \LaTeX
+\end{multicols}
+
+\end{document}

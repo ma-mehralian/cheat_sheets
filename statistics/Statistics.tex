@@ -1,0 +1,250 @@
+\documentclass{../cheat}
+\title{Statistics}
+\author{ma.mehralian}
+
+\begin{document}
+\begin{multicols}{3}
+	\section{Statistical Review}
+	
+	\begin{itemize}
+		\item 
+		\item Continuous RV: Probability Density Function (PDF)
+		\item Both: Cumulative Distribution Function (CDF)
+	\end{itemize}
+	
+	\textbf{Independence:}
+	\begin{itemize}
+		\item $P(A \cap B) = P(A) P(B)$
+		\item $P(A|B) = P(A)$
+		\item Mutual Independence: 
+		\begin{itemize}
+			\item $P(A_1 \cap A_2 \cap  \ldots \cap A_k ) = P(A_1) P(A_2) \ldots P(A_k)$
+			\item $P(A_1, A_2, \ldots ,A_k | B ) = \prod_{i=1}^k P(A_i|B)$
+		\end{itemize}
+	\end{itemize}
+	Bayes' Theorem 
+	$P(B)=\sum^{k}_{i=1} P(B|A_i)P(A_i)$
+	
+	
+	
+
+	\textbf{Expected Value:}
+	Expected value is just a weighted average of the values of $X$, weighted by their probabilities.
+
+			\setlength{\gapspace}{0.5\columnwidth}
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item \tab{$\operatorname{E}[b]= b$}
+				$\operatorname{E}[aX+ b]= a \operatorname{E}[X]+ b$
+		\item $\operatorname{E}[XY]= \operatorname{E}[X ]* \operatorname{E}[Y]$ If X and Y are independent
+		\item $\operatorname{E}[g(X)]=\int g(X) f(x)$
+	\end{itemize}
+	
+	\textbf{Variance \& Standard Deviation:}
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item \tab{$ \operatorname{Var}(X) = \sigma^2_X = \operatorname{E}[(X - \mu)^2 ]$}
+			$\operatorname{Var}(X) = \operatorname{E}\left[X^2 \right] - \mu^2$
+		\item \tab{$ \operatorname{Var}(b)= 0$}
+				$ \operatorname{Var}(aX+ b)= a^2  \operatorname{Var}(X)$
+		\item $ \operatorname{Var}(X \pm Y)=  \operatorname{Var}(X)+ \operatorname{Var}(Y)$ If X and Y are independent
+	\end{itemize}
+	
+	\textbf{Covariance:}
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item $\operatorname{Cov}(a +bX ,c +dY ) =bd \operatorname{Cov}(X,Y)$
+		\item $\operatorname{Cov}(X,Y)=0$ If X and Y are independent
+		\item $\operatorname{Cov}(X,Y)>0$ If X and Y have direct relationship
+		\item $\operatorname{Cov}(X,Y)<0$ If X and Y have inverse relationship
+		\item $ \operatorname{Var}(X \pm Y) = \operatorname{Var}(X)+ \operatorname{Var}(Y) \pm 2\operatorname{Cov}(X,Y)$
+		\item $ \operatorname{Var}(X+Y+Z) =  \operatorname{Var}(X)+ \operatorname{Var}(Y)+ \operatorname{Var}(Z)+2\operatorname{Cov}(X,Y)+2\operatorname{Cov}(X,Z) + 2\operatorname{Cov}(Z,Y)$
+	\end{itemize}
+	
+	\textbf{Covariance Matrix ($\Sigma$):}
+	\begin{align*}
+		\Sigma&=\operatorname{E}[(X-\operatorname{E}[X])(X-\operatorname{E}[X])^T]\nonumber\\
+		{} &=\left[\begin{array}{ccc}
+			\operatorname{E}[(x_1-\mu_1)^2] & \ldots & \operatorname{E}[(x_1-\mu_1)(x_n-\mu_n)] \\
+			\vdots & \ddots & \vdots \\
+			\operatorname{E}[(x_n-\mu_n)(x_1-\mu_1)] & \ldots & \operatorname{E}[(x_n-\mu_n)^2]\\
+		\end{array}\right]\nonumber\\
+		{} &=\left[\begin{array}{ccc}
+			\sigma_{11} & \ldots & \sigma_{1n} \\
+			\vdots & \ddots & \vdots \\
+			\sigma_{n1} & \ldots & \sigma_{nn}\\
+		\end{array}\right] \text{where} \quad \sigma_{ij}=\rho_{ij}\sigma_i\sigma_j
+	\end{align*}
+
+			\begin{itemize}[nolistsep, leftmargin=1em]
+		\item $\Sigma$ is positive-semidefinite and symmetric
+		\item $\Sigma = \operatorname{E}[XX^T] -\mu\mu^T$
+		\item \tab{$\operatorname{Var}(AX+a) = A \operatorname{Var}(X)A^T$}  $\operatorname{Cov}(X,Y) = \operatorname{Cov}(Y,X)^T$
+		\item $\operatorname{Var}(X+Y) = \operatorname{Var}(X) + \operatorname{Var}(Y) + \operatorname{Cov}(X,Y) + \operatorname{Cov}(Y,X)$
+		\item $\operatorname{Cov}(AX+a ,BY+b) = A \operatorname{Cov}(X,Y)B^T$
+		\item $\operatorname{Cov}(X_1+X_2 ,Y) = \operatorname{Cov}(X_1,Y)+\operatorname{Cov}(X_2,Y)$
+	\end{itemize}
+
+			\textbf{Correlation Coefficient:}
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item $\operatorname{Corr}(X,Y)=\rho_{X,Y}=\dfrac{\operatorname{Cov}(X,Y)}{\sigma_X \sigma_Y}$, $-1\leq \rho \leq1$
+		\item $\operatorname{Corr}(a X + b, cY + d) = \operatorname{Corr}(X,Y)$
+		\item $\rho=\mp1$ indicating perfect negative/positive association.
+	\end{itemize}
+	
+	\textbf{Correlation Matrix ($\operatorname{R}$):}\\
+	$\Sigma=\Gamma \operatorname{R} \Gamma$, 
+	$\Gamma=\left[\begin{array}{*{4}c}
+		\sigma_1 & 0 & \ldots & 0\\
+		0 & \sigma_2 & \ldots & 0\\
+		\vdots & & \ddots & \vdots\\
+		0 & 0 & \ldots & \sigma_n\\
+	\end{array}\right] \; \text{and} \:
+	\operatorname{R}=\left[\begin{array}{*{4}c}
+		1 & \rho_{12} & \ldots & \rho_{1n}\\
+		\rho_{12} & 1 & \ldots & \\
+		\vdots & & \ddots & \vdots\\
+		\rho_{1n} &  & \ldots & 1\\
+	\end{array}\right]$	
+
+	\textbf{Moments}
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item $n^{th}$ order moment of a RV $X$ is the expected value of $X^n$: $M_n=\operatorname{E}[X^n]$
+		\item Normalized form (Central Moment): $M_n=\operatorname{E}[(X-\mu_X)^n]$.
+		\item 1st moment is \textbf{Mean}.
+		\item 2nd moment is \textbf{Variance}.
+		\item 3rd moment is \textbf{Skew} (Measure of asymmetry)
+		\item 4th moment is \textbf{Kurtosis} (Measure of flatness)
+	\end{itemize}
+	
+	\textbf{Marginal distribution:} distribution of one or more variables $P(A)=\sum_B P(A,B)$
+	
+	 \textbf{consistent estimator} is an estimator having the property that as the number of data points used increases indefinitely, the resulting sequence of estimates converges in probability to $\theta$\\
+	 \centerline{(??)$\underset{n\to\infty}{\lim}\;\hat{\theta}_n = \theta$
+	 	\quad $\underset{n\to\infty}{\lim}\;\operatorname{Var}(\hat{\theta}_n) = 0$}
+	 
+	\textbf{Point Estimation}
+	\begin{itemize}
+		\item A point estimate is obtained by selecting a suitable statistic and computing its value from the given sample data. 
+		\item A measure of accuracy is the expected or mean square error (MSE): $E[(\hat{\theta}- \theta)^2]$
+		\item A point estimator $\hat{\theta}$ is said to be an unbiased estimator of $\theta$ if $E(\hat{\theta}) = \theta$.
+		\item The difference $E(\hat{\theta}- \theta)$ is called the bias of $\hat{\theta}$.
+		\item maximum likelihood method, moments method
+	\end{itemize}
+
+	\textbf{Interval estimation}
+	\begin{itemize}
+		\item confidence intervals
+	\end{itemize}				
+
+	
+	\section{Stochastic}
+	
+	\textbf{Probability Space}
+	\begin{enumerate}
+		\item $\Omega$: The set of all possible outcomes which is called \textbf{Sample Space}.
+		\item $\omega$: Every element $\Omega$ of is called an \textbf{Event}.
+		\item $P$: A \textbf{probability measure} intends to be a function defined for all subsets of $\Omega$.
+	\end{enumerate}
+	\begin{itemize}
+		\item Two events are mutually exclusive or \textbf{disjoint} if they cannot occur at the same time.
+		\item Two events are \textbf{independent} if the occurrence of one does not change the probability of the other occurring.
+	\end{itemize}
+	\textbf{Random Variables (RV):} A random variable is a quantity whose value is determined by the outcome of an experiment.
+	
+	\subsection{Discrete Sample Spaces}
+	Discrete RV: Probability Mass Function (PMF)
+	\\ \centerline{$p_X[x] = P[X = x]$}
+	
+	\textbf{Bernoulli}
+	\\ \centerline{ $p_X(k)=\mathrm{p}	;\; E[X]=\mathrm{p} ;\;  \operationname{Var}[X]=\mathrm{p}\mathrm{q}$}
+	\begin{itemize}
+		\item Any random variable whose only possible values are $0$ and $1$ occurs with probability $p$ is called a \textbf{Bernoulli} random variable.
+		\item The Bernoulli process consists of repeated independent Bernoulli trials with the same
+parameter $p$.
+	\end{itemize}
+
+	
+	\textbf{Binomial distribution}
+	\\ \centerline{ $p_X(k)=\left( {\begin{array}{*{20}c} n \\ k \\ \end{array}} \right) \mathrm{p}^k \mathrm{q}^{n-k}
+		;\; E[X]=n\mathrm{p} ;\;  \operationname{Var}[X]=n\mathrm{p}\mathrm{q}
+	$}
+	\begin{itemize}
+		\item If you ask how many successes there will be among $n$ Bernoulli trials, then the answer will have a \textbf{Binomial distribution}.
+		\item \textbf{Examples}:
+		\begin{itemize}
+			\item The number of heads/tails in a sequence of coin flips
+			\item Vote counts for two different candidates in an election
+			\item The number of male/female employees in a company
+			\item The number of accounts that are in compliance or not in compliance with an accounting procedure
+			\item The number of successful sales calls
+			\item The number of defective products in a production run
+			\item The number of days in a month your company’s computer network experiences a problem
+		\end{itemize}
+		\item The binomial probability law can be generalized to the case where we note the occurrence of more than one event, then the answer will have a \textbf{Multinomial distribution}.	... The vector specifies the $(k_1, \ldots, k_M)$ number of times each of the events $B_i$ occurs.
+		
+		\item If you ask how many trials it will be to get the first success, then the answer will have a \textbf{Geometric distribution}.
+		\item If you ask how many trials there will be to get the $r^\text{th}$ success, then the answer will have a \textbf{Negative Binomial distribution}.
+		\item Given that there are $M$ successes among $N$ trials, if you ask how many of the first $n$ trials are successes, then the answer will have a \textbf{Hypergeometric}.
+	\end{itemize}
+
+	\subsection{Continuous Sample Spaces}
+	The \textbf{characteristic function} of a random variable X is defined by
+	$\Phi_X(\omega) = E[e^{j\omega X}]$
+	
+	\textbf{Poisson distribution}
+	 \begin{itemize}
+	 	\item A \textbf{Poisson} process is the continuous version of a Bernoulli process.
+	 	\item Whereas in a Bernoulli process either no or one event occurs in a unit time interval, in a Poisson process any nonnegative whole number of events can occur in unit time.
+	 	\item If you ask how many events occur in an interval of length t, then the answer will have a \textbf{Poisson distribution}.
+	 	\item It usually is applicable in situations where random "events" occur at a certain \textit{rate} over a period of \textit{time}.
+	 	\item Examples:
+	 	\begin{itemize}
+	 		\item The hourly number of customers arriving at a bank
+	 		\item The daily number of accidents on a particular stretch of highway
+	 		\item The hourly number of accesses to a particular web server
+	 		\item The daily number of emergency calls in Dallas
+	 		\item The number of typos in a book
+	 		\item The monthly number of employees who had an asence in a large company
+	 		\item Monthly demands for a particular product
+	 	\end{itemize}
+	\end{itemize} 
+	\textbf{Exponential distribution}
+	\begin{itemize} 
+	 	\item If you ask how long until the first event occurs, then the answer will have an \textbf{Exponential distribution}.
+	 	\item typically used to model time intervals between "random" events
+	 	\item Examples:
+	 	\begin{itemize}
+	 		\item The length of time between telephone calls
+	 		\item The length of time between arrivals at a service station
+	 		\item The life time of electronic components, i.e., an inter-failure time
+	 	\end{itemize}
+	\end{itemize}
+	
+	\textbf{Gamma distribution}
+	\begin{itemize}
+	 	\item If you ask how long until the $r^\text{th}$ event, then the answer will have a \textbf{Gamma distribution}.
+	 	\item [-] For example, it is used to model the time required to service customers in queueing systems, the lifetime of devices and systems in reliability studies, and the defect clustering behavior in VLSI chips.
+	 	\item If there are $\alpha+\beta$ events in a given time interval, if you ask what fraction of the interval it takes until the $\alpha^\text{th}$ event occurs, then the answer will have a \textbf{Beta distribution}.
+	 \end{itemize}
+	 
+	\textbf{Distributions related to the central limit theorem}
+	\begin{itemize}
+		\item The Central Limit Theorem says sample means and sample sums approach normal distributions as the sample size approaches infinity.
+		\item Normal distribution
+		\item $\chi^2$-distribution: ChiSquared($\nu$), The parameter $\nu$, the number of "degrees of freedom"
+		\item Student’s T-distribution
+		\item Snedecor-Fisher’s F-distribution
+	\end{itemize}
+	
+% You can even have references
+\vspace{5mm}
+\rule{0.3\linewidth}{0.25pt}
+\scriptsize
+
+\textbf{References:}
+\begin{itemize}[leftmargin=2em]
+	\item [{[1]}] ??? 
+
+\end{itemize}
+Made by \href{http://webpages.iust.ac.ir/mehralian/}{ma.mehralian} using \LaTeX
+\end{multicols}
+
+\end{document}

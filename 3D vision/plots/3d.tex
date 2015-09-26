@@ -1,0 +1,16 @@
+\documentclass{standalone}
+\usepackage{pgfplots}
+
+\begin{document}
+
+\begin{tikzpicture}
+	\pgfmathsetmacro{\cubex}{1}
+	\pgfmathsetmacro{\cubey}{1}
+	\pgfmathsetmacro{\cubez}{1}
+	\draw[] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+	\draw[] (0,0,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+	\draw[] (0,0,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+\end{tikzpicture}
+
+
+\end{document}

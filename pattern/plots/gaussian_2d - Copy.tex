@@ -1,0 +1,39 @@
+\documentclass{standalone}
+\usepackage{pgfplots}
+
+\begin{document}
+
+	\pgfmathdeclarefunction{gauss}{2}{%
+	  \pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+	}
+	
+	\begin{tikzpicture}[scale=0.8]
+	\begin{axis}[
+	  no markers, domain=-4:4, samples=50,
+	  axis lines*=left,
+	  ymax=0.4,
+	  xlabel=$x$, ylabel=$y$,
+	  height=5cm, width=10cm,
+	  xtick={-3, -2, ..., 3},
+	  xticklabels={$-3\sigma$, $-2\sigma$, $-1\sigma$, $\mu$, $1\sigma$, $2\sigma$, $3\sigma$},
+	  enlargelimits=false, clip=false, axis on top
+	  ]
+		\addplot [white, fill=cyan!50!black, domain=-0:1] {gauss(0,1)} \closedcycle;
+		\addplot [white, fill=cyan!50!black, domain=-1:0] {gauss(0,1)} \closedcycle;
+		\addplot [white, fill=cyan!70!black, domain=1:2] {gauss(0,1)} \closedcycle;
+		\addplot [white, fill=cyan!70!black, domain=-2:-1] {gauss(0,1)} \closedcycle;
+		\addplot [white, fill=cyan!90!black, domain=2:3] {gauss(0,1)} \closedcycle;
+		\addplot [white, fill=cyan!90!black, domain=-3:-2] {gauss(0,1)} \closedcycle;	
+		\addplot [thick] {gauss(0,1)};
+		
+		\node at (axis cs:0.5,0.2) [white] {$34.1\%$};
+		\node at (axis cs:-0.5,0.2) [white] {$34.1\%$};
+		\node at (axis cs:1.5,0.05) [white] {$13.6\%$};
+		\node at (axis cs:-1.5,0.05) [white] {$13.6\%$};
+		\node at (axis cs:2.5,0.1) {$2.1\%$};
+		\node at (axis cs:-2.5,0.1) {$2.1\%$};
+		\node at (axis cs:3.5,0.07) {$0.1\%$};
+		\node at (axis cs:-3.5,0.07) {$0.1\%$};
+	\end{axis}
+	\end{tikzpicture}
+\end{document}

@@ -1,0 +1,475 @@
+\documentclass{../cheat}
+\title{Advanced Computer Vision}
+\author{ma.mehralian}
+
+%======
+%\def \TitleText {}
+\def \itm{{\tiny$\blacktriangleright$}}
+%======
+
+\usepackage{float}
+\floatstyle{ruled}
+\newfloat{tables}{thp}{lop}
+\floatname{tables}{Tables}
+
+
+\begin{document}
+
+
+%==========================================================
+\begin{multicols}{3}
+
+\section{2D Tracking}
+	\subsection{Introduction}
+	%fixed mounting camera\\
+	%fixed background
+
+	\subsubsection{Detection VS Tracking:}
+		\textbf{Detection:} Estimate $X$ at an instant.\\
+		\ding{51} Exhaustive.
+		\ding{55} Inefficient.
+		\ding{55} Dataassociation.
+
+		\textbf{Tracking:} Maintains an estimate of $X$ overtime \& predict future location.\\
+		\ding{51} Efficient.
+		\ding{51} Smoothes.
+		\ding{55} Assumptions about object behavior.
+
+	
+	\subsubsection{Approaches to Tracking:}
+		\textbf{Sequential:} Recursive, Online.\\
+		\ding{51} Inexpensive $\rightarrow$ real-time.
+		\ding{55} No future information.
+		\ding{55} Cannot revisit past errors.
+		
+		\textbf{Batch processing:} Offline.\\
+		\ding{55} Inexpensive $\rightarrow$ not real-time.
+		\ding{51} Considersall information.
+		\ding{51} Can correct past errors.
+		
+		
+		\textbf{Parallel trackers:}
+		Several single-object trackers.\\
+		\ding{51} Computationally less expensive.
+		\ding{55} Ad-hoc interaction.
+		
+		\textbf{Joint state:}
+		Single multi-object representation.\\
+		\ding{55} Computationally expensive.
+		\ding{51} Explicit principled interaction.
+
+
+		\textbf{Non-probabilistic:} 
+		Mean shift, gradient descent, least squares, AI (agents).\\
+		\ding{51} Quick convergence.
+		\ding{51} Efficient.
+		\ding{55} Stuck in local max/min.
+		\ding{55} Modeling multiple objects.
+
+		\textbf{Probabilistic:}
+		Kalman \& particle filter, Bayes net inference, kernel density estimation, relevance vector machine, principled.\\
+		\ding{51} Multi-modal.
+		\ding{55} Slower.
+		\ding{55} Interpretation.
+
+	\textbf{Tracking Challenges:} Appearance change, Occlusion, Distraction, Illumination, Difficult motion, Multiple objects, Scale change.
+\subsection{Bayesian Filtering}
+	\begin{tikzpicture}
+		\node[state] (x_t0) {$x_t$};
+		\node[state] (x_t1) [node distance=3cm, right of=x_t0] {$x_{t+1}$};
+		\node[state] (z_t) [node distance=1.5cm, below of=x_t0] {$z_t$};
+	
+		\path[->]
+		(x_t0)	edge node [pos=.75, left, align=center] {dynamic\\model} (x_t1)
+					edge node [left, align=center] {observation \\ model} (z_t);
+	\end{tikzpicture}
+
+	\begin{tabularx}{\columnwidth}{l X}
+		Dynamic Model:& $x_t=F_t x_{t-1}+w_t$ \newline
+		$w_t \sim N(0,Q_t)$ \newline $p(x_t|x_{t-1})=N(F_t x_{t-1}, Q_t)$\\
+		Observation Model:& $z_t=H_t x_t+v_t$ \newline
+		 $v_t \sim N(0,R_t)$ \newline $p(z_t|x_t)=N(H_t x_t, R_t)$\\
+		Posterior:& $p(x_t|z_t)=N(x_{t|t}, P_{t|t})$\\
+	\end{tabularx}
+
+	Recursive Bayesian Filtering:
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item $p(x_t|z_t)\varpropto p(z_t|x_t) \int_{x_{t-1}}{p(x_t|x_{t-1}) p(x_{t-1}|z_{t-1})}$
+	\end{itemize}
+			
+\subsection{Kalman Filter}
+\begin{tabularx}{\columnwidth}{l X}
+	Prediction:&  $\hat{x}_{t|t-1}=F\hat{x}_{t-1|t-1}$ \newline
+		$P_{t|t-1}=F_t P_{t-1|t-1} F_t^T+Q_{t-1}$\\
+	Measurement residual:& $\tilde{y}_t=z_t-H_t \hat{x}_{t|t-1}$ \newline
+		$S_t=H_t P_{t|t-1} H_t^T+R_t$\\
+	Kalman gain:& $K_t= P_{t|t-1}H_t^T S_t^{-1}$\\
+	Correction:& $\hat{x}_{t|t}=\hat{x}_{t|t-1}+K_t \tilde{y}_k$ \newline
+		$P_{t|t}=I-K_t H_t P_{t|t-1}$\\
+\end{tabularx}
+
+\subsection{Particle Filters}
+	\begin{tabularx}{\columnwidth}{l X}
+		Posterior:& $p(x_{t-1}|z_{t-1})=\sum_{n=1}^N w_{t-1}^{(n)} \delta(x_{t-1}-x_{t-1}^{(n)})$\\
+	\end{tabularx}
+%	\vfill
+%	\columnbreak
+%=========================================================
+\section{other topics}
+	\subsection{Section 8: Numerical Optimization}
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item \textbf{General Optimization Methods:}
+			\begin{itemize}
+				\item Gradient/Steepest Descent: Move through the negative direction of the gradient vector to find minima locations.
+				\item Conjugate Gradient: Gradient descent with optimal $\lambda$.
+			\end{itemize}
+		
+		\item \textbf{Weaknesses:} How to 
+			\itm initialize the algorithm?
+			\itm choose the step size$\lambda$?
+			\itm manage lots of iterations in long \& narrow valleys?
+		
+		\item \textbf{NOTE:}
+			\itm Linear estimation algorithm is fast, but sensitive to noise.
+			\itm Iterative nonlinear estimation is slower, but more precise.
+			\itm Linear algorithm can be used to initialize nonlinear ones.
+		
+		\item \textbf{Nonlinear Least-Squares:}
+			\begin{itemize}
+				\item Newton-Raphson: $x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)}$
+				\item Gauss-Newton (GNA): $p_{i+1}=p_i+\Delta_i$ \\
+					\centerline{$\Delta_i=\min \limits _{\Delta}\parallel f(p_i+\Delta)-b\parallel^2 $}
+				\item Levenberg-Marquardt: 
+					\itm interpolates between (GNA) \& gradient descent method.
+					\itm more robust but bit slower than GNA.
+			\end{itemize}
+	\end{itemize}
+	
+	\textbf{Some robust objective functions:}
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item Maximum-likelihood estimator (M-estimator): reduce the effect of outliers by replacing distance by another function to down weight outliers.
+			\ding{55} Handles few percents of outliers.
+			\ding{55} Requires a threshold.
+		\item RANSAC: 
+			\ding{51} Handles more than 50\% outliers.
+			\ding{55} Requires a threshold.
+		\item Least-Median-of-Squares (LMedS) estimator:
+			\ding{51}Handles 50\% outliers.
+			\ding{51} Does not require a threshold.
+			\ding{51} can be speeded up considerably by means of parallel computing
+	\end{itemize}
+	
+	\textbf{Homography RANSAC loop:}
+	\begin{enumerate}[nolistsep, leftmargin=1em]
+		\item Select 4 feature pairs (at random).
+		\item Compute the homography H (exact).
+		\item Compute inlierswhere $\parallel p'_i, Hp_i\parallel< \epsilon$.
+		\item Keep the largest set of inliers.
+		\item Re-compute the least-squares H estimate, using all of inliers.	
+	\end{enumerate}
+	
+	\textbf{Epipolar RANSAC loop:}
+	\begin{enumerate}[nolistsep, leftmargin=1em]
+		\item Select at random a set of 8 successful matches.
+		\item Compute the fundamental matrix $F_k$.
+		\item Determine the subset of inliers (Sampson distance).
+		\item Count the number of points in the consensus set.
+	\end{enumerate}
+	
+	\textbf{Robustness:}
+	\begin{itemize}[nolistsep, leftmargin=1em]	
+		\item the number of model parameters (minimal correspondences needed): Bad exponential
+		\item the percentage of inliers: Base of the exponential
+		\item the number of iterations: Good exponential
+	\end{itemize}
+
+	$(1-G^P)^N$ G:Proportion of inliers, Model needs P pairs, N iterations
+	
+	\textbf{PROSAC:} we have a measure of confidence for each measurement
+	
+	\subsection{Section 10: Segmentation of Dynamical Scenes}
+	\textbf{Kmeans Algorithm}
+	\begin{enumerate}[nolistsep, leftmargin=1em]	
+		\item Set, iteration=1;
+		\item Choose randomly K-means $m_1, \cdots, m_k$;
+		\item For each data point $x_i$, compute the distance to each of the means \& assign it to the cluster with the nearest mean.
+		\item Iteration=iteration+1;
+		\item Recompute the means based on new assignments of points to clusters (adjust means);
+		\item Repeat Steps 3-5 until the cluster centers converge (do not change much).
+	\end{enumerate}
+	
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item \textbf{Pros:}
+			\ding{51} K-means is computationally efficient.
+			\ding{51} Gives good results if the clusters are compact.
+		\item \textbf{Cons:}
+			\ding{55} Memory-intensive.
+			\ding{55} Choice of K \& initial partitions.
+			\ding{55} Sensitive to initialization stage.
+			\ding{55} Sensitive to outliers.
+			\ding{55} Only finds "spherical" clusters.
+			\ding{55} Suffers from problems of local minima.
+	\end{itemize}
+
+	\textbf{Minkowski metric} (or $L_p$ norm): \\
+		\centerline{$L_p(x,y)=(\sum_{i=1}^d |x_i-y_i|^p)^{1/p}$}
+	
+	\itm $L_2$: Euclidean, $L_1$=Manhattan (or block city)
+	
+	\subsubsection{KNN}
+	non-parametric method, dinstance-based learning, or lazy learning.
+	
+	KNN requires: 
+	\itm An integer K.
+	\itm training dataset
+	\itm A metricto measure closeness.
+	
+	\textbf{large values of K:}
+	\ding{51} Yields smoother decision regions.
+	\ding{51} Provides probabilistic information.
+	\ding{51} The ratio of examples for each class gives information about the ambiguity of the decision.
+	
+	\textbf{K too large:}
+	\ding{55} Destroys the locality of the estimation.
+	\ding{55} Increases the computational burden.
+	
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item \textbf{Pros:}
+			\ding{51} Analytically tractable.
+			\ding{51} Simple implementation.
+			\ding{51} Nearly optimal in the large sample.
+			\ding{51} Uses local information
+			\ding{51} easy to parallel implementations.
+		\item \textbf{Cons:}
+			\ding{55} Large storage requirements.
+			\ding{55} Computationally intensive recall.
+			\ding{55} Sensitive to the local structure of the data.
+			\ding{55} Highly susceptible to the curse-of-dimensionality.
+	\end{itemize}
+	
+	\subsubsection{EM}
+	EM is an iterative method for finding ML, or MAP, estimates of parameters in statistical models.
+	
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item \textbf{Pros:}
+			\ding{51} Probabilistic interpretation.
+			\ding{51} Soft assignments between data points \& clusters.
+			\ding{51} Generative model.% (Can predict novel data points).
+			\ding{51} Relatively compact storage.
+		\item \textbf{Cons:}
+			\ding{55} Local minima.
+			\ding{55} Needs an initial guess of the parameters.(Often good idea to start with a K-means clustering).
+			\ding{55} Needs to know the number of components.
+			\ding{55} There can be numerical problems.
+	\end{itemize}
+		
+	\subsubsection{Mean Shift}
+	kernel function properties: 
+	\itm Integrate to 1.
+	\itm symmetric.
+	\itm maximum at 0.
+	\itm Decay quickly to zero.
+	\itm Extent of the kernel be the same along all dimensions.
+	
+	\textbf{Algorithm}
+	\begin{enumerate}[nolistsep, leftmargin=1em]
+		\item Define the kernel K at each data point.
+		\item Sum up the result into a single function.\\
+			\centerline{$f(X)=1/N \sum_i K(X-X_i)$}
+		\item Move in the direction of mean shift vector to converge to the closest mode.\\
+			\centerline{$X \leftarrow X+M(X)=\frac{\sum_i X_i g(\parallel X-X_i \parallel^2/h^2)}
+			{\sum_i g(\parallel X-X_i \parallel^2/h^2)}$}
+	\end{enumerate}
+	
+	\textbf{Kernel Bandwidth h:}
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item Too small $\rightarrow$ overfits the data points.
+		\item Too large $\rightarrow$ smoothes out the details of data. 
+	\end{itemize}
+	
+	\subsection{Section 11: Keypoint Description}
+		\textbf{Canny} Edge Detector:
+		\begin{enumerate}[label=\roman*, nolistsep, leftmargin=1em]
+			\item Apply a Gaussian filter.
+			\item Find the magnitude \& direction of the gradient (Sobel).
+			\item Apply nonmaxima suppression.
+			\item Apply two thresholds (hysteresis):
+		\end{enumerate}
+		
+		\textbf{Harris:}
+		\itm localize the point whitch shifting a window in any direction should give a large change in intensity.  
+		\itm corner points has two large positive eigenvalues.
+		$Tr(H)=I_{xx}+I_{yy}=\lambda_1+\lambda_2, Det(H)=I_{xx}I_{yy}-I_{xy}^2=\lambda_1 \lambda_2$
+		
+		Eigen values of $A^{-1}$ define the error ellipses (F\"{o}rstner)
+		
+		Harris-Laplacian: Find local maximum of Laplacian in scale.
+		
+		\textbf{Hessian} $\frac{Tr(H^2)}{Det(H)}=\frac{(r+1)^2}{r}$, r=eigenvalue ratio
+		
+		\textbf{Harris-Affine Detector Algorithm:}
+		\textbf{i.}Identify initial region points using scale-invariant Harris-Laplace detector.
+		\textbf{ii.}For each initial point, normalizethe region to be affine invariant using affine shape adaptation.
+		\textbf{iii.}Iteratively estimate the affine region:
+			\itm Selection of proper integration scale, differentiation scale, \& spatially localized interest points.
+		\textbf{iv.}Updatethe affine region using these scales \& spatial localizations.
+		\textbf{v.}RepeatStep 3, if the stopping criterion is not met.
+
+		\subsubsection{Maximally Stable Extremal Region (MSER)}
+		Connected component of thresholded image\\
+		\textbf{Local Affine Frame (LAF) Assumptions:}
+		\itm Local planarity.
+		\itm Perspective camera.
+		
+		\textbf{Comparison to other Region Detectors:}
+		\begin{itemize}
+			\item Region density: Offers the most variety detection.
+			\item Region size: Detects many small regions
+			\item Viewpoint change: Outperforms the other region detectors.
+			\item Scale change: $2^{nd}$ under a scale change \& in-plane rotation after Hessian-affine
+			\item Blur: The most sensitive to this type of change in image.
+			\item Light change: Shows the highest repeatability score.
+		\end{itemize}
+		
+		Hessian-Affine=textured scenes, corner-like parts, structured scenes. 
+		MSER=well-structured (segmentable)
+		
+		\subsubsection{F\"{o}rstner}
+		\itm Detects line crossing (corner, junction).
+		\itm Center of circular structures.
+		
+		\textbf{Algorithm:}
+		\begin{enumerate}[label=\roman*, nolistsep, leftmargin=1em]
+			\item Find region where the autocorrelation is of rank 2.
+			\item Compute the form of error ellipses (w, q). \\
+				\centerline{size of ellipse $w=\frac{det(A)}{trace(A)}$
+				shape of ellipse $q=\frac{4 det(A)}{trace(A)^2}$}
+			\item Apply non-maximal suppression.
+			\item Compute F\"{o}rstner points.
+		\end{enumerate}
+
+		\subsubsection{Scale Invariant Feature Transform (SIFT)}
+		LoG: Detects blobs if the convolution scale matches the size of the blob.
+		
+		\textbf{keypoint detection:}
+		\begin{enumerate}
+			\item Super sample original image.
+			\item Compute smoothed images using different scales σfor entire octave.
+			\item Compute DoG images from adjacent scales for entire octave.
+			\item Subsample image $2\sigma$ of current octave \& repeat Steps 2 \& 3 for the next octave.
+			\item Isolate keypoints in each octave by detecting extremain DoG compared to neighboring pixels.
+		\end{enumerate}
+
+		
+		\subsubsection{Speeded Up Robust Feature (SURF)}
+		\textbf{SURF:} It uses the sum of Haar wavelet response around the point of interest. these can be computed with the aid of integral image.
+		
+		\subsubsection{HOG}
+		Describes the local object appearance \& shape by using the distribution of intensity gradients
+		
+		\textbf{Algorithm:} Input Images $\rightarrow$ Normalize gamma $\rightarrow$ Compute gradients $\rightarrow$ Vote weights in spatial \& orientation cells $\rightarrow$ Normalize contrast in overlapping spatial cells (Blocks: R-HOG, C-HOG) $\rightarrow$ HoG Features
+		
+		\textbf{HoG Descriptor Parameters}: Gradient scale, Orientation bins, Block overlap percentage [other: Normalization method, Transformation Functions, scale-space pyramid space]
+		% HOG vs SIFT!
+		
+		%\subsubsection{DTCWT}
+		
+		
+		\subsubsection{GIST}
+			\textbf{GIST:} Apply oriented Gabor filters over different scales. Average filter energy in each bin.
+			(16 Bins) x (8 Orientations) x (4 Scales)=512
+			
+			The procedure is based on a very low dimensional representation of the scene called "spatial envelope".
+			
+			\textbf{Gist properties:}
+			\begin{itemize}
+				\item Invariant to: Luminance transformations, blur, resize, etc.
+				\item Not invariant to: Translation, rotation, occlusion, crop, etc.
+				\item Distance measure: L2 distance to compare, NN-search.
+			\end{itemize}
+			\textbf{Applications:} Scene recognition, Copy detection, Depth estimation, Image classification, Scene completion (inpainting), Robot navigation
+			 
+			 
+	\subsection{Section 12 Keypoint Matching}
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item \textbf{Blobs} are characterized by connected components of contours.
+		
+		\item Factors leading to l\textbf{arge costs} in \textbf{correlation matching}:
+			\ding{55} Image is much larger than template. 
+			\ding{55} We might have many templates.
+			\ding{55} orientation.
+			\ding{55} scale.
+		
+		\item \textbf{Reducing the Cost:} Reducing the number of 
+			\ding{51} image windows
+			\ding{51} database objects 
+				(index templates by features such as moments, Measure moments of candidate windows, Only match "similar" templates.)
+			\ding{51} operations (1-Reduce the number of pixels: Multiresolution, Principal component. 2-Match a subset of M against a subset of N: random, boundary)
+			
+		\item \textbf{Chamfer matching} is the correlation between a binary edge template \& the distance transform.
+		
+		\item \textbf{Distance Transform:} Each pixel has a (Manhattan) distance to the nearest edge pixel.
+		
+		\item Global templates are \textbf{sensitive} to:
+			\ding{55} Partial occlusions.
+			\ding{55} Non-rigid deformations. 
+			\ding{51} \textbf{solution:} Constellation of local edge fragments.	
+		
+		\item \textbf{Hausdorff} distance is the greatest of all distances from a point in one set to the closest point in the other set.
+	\end{itemize}
+	
+	\subsubsection{KD-Tree}
+	\begin{itemize}[nolistsep, leftmargin=1em]
+		\item \textbf{Construction of KD-Tree}
+			\begin{enumerate}
+				\item Find the dimension of maximum variation.
+				\item Split the data on its median/mean value (equal partition).
+				\item Repeat the procedure.
+			\end{enumerate}
+
+		\item \textbf{KD-Tree NN Search}
+		\begin{enumerate}
+			\item Start with the root node.
+			\item Once you reach a leaf node, save that node point as the "current best".
+			\item At each node:
+				\begin{enumerate}[label=\roman*, nolistsep, leftmargin=1em]
+					\item If the current node is closer than the current best, consider it as the current best.
+					\item Check if there is any points on the other side of the splitting plane that are closer to the search point than the current best.
+					\begin{enumerate}[label=\alph*, nolistsep, leftmargin=1em]
+						\item If the hyper sphere (with a radius equal to the current nearest distance) crosses the plane, there could be nearer points on the other side of the plane:
+						\\- Move down the other branch of the tree from the current node looking for closer points.
+						\item If the hyper sphere does not intersect the splitting plane, continue walking up the tree.
+						\\-Eliminate the entire branch on the other side of that node.
+					\end{enumerate}
+				\end{enumerate}
+			\item Finish this process (for the root node) when the search is complete.
+		\end{enumerate}
+		
+		\item \textbf{Best-Bin-First Search}
+		Key ideas:
+		\begin{itemize}
+			\item Search KD-tree bins in the order of distancefrom query.
+				(Requires use of a priority queue)
+			\item Search afixed number of neighboring KD-tree bins.
+				(Only an approximate NN is found.)
+			\item Backtrack according to a priority based on closeness.
+			\item Reduce the boundary effects by randomization.	
+		\end{itemize}
+	\end{itemize}
+
+	
+%====================== REFERENCES ======================
+\vspace{5mm}
+\rule{0.3\linewidth}{0.25pt}
+\scriptsize
+
+\textbf{References:}
+\begin{itemize}[leftmargin=2em]
+	\item [{[1]}] Selected Topics in Computer Vision at EPFL  \href{http://cvlab.epfl.ch/teaching/topics/}{\url{COM-711}}
+	\item [{[2]}] Prof. Shohreh Kasaei, \textit{Advance vision course notes}, spring 2014.
+\end{itemize}
+Made by \href{http://webpages.iust.ac.ir/mehralian/}{ma.mehralian} using \LaTeX
+\end{multicols}
+
+
+\end{document}
