@@ -19,27 +19,27 @@ This repository contains some of my courses fragmentary cheat sheets in LaTex.
     * **References**:
       * [1] Artificial Intelligence A Modern Approach, Stuart Russell and Peter Norving
 
-    * **Algorithm**: 
+  * **Algorithm**: 
     * **Keywords**: Complexity Analysis, Divide-and-Conquer, Dynamic Programming, Greedy algorithms, Backtracking
     * **References**:
       * [1] Foundations of Algorithms, Richard E. Neapolitan and Kumarss Naimipour
 
-    * **Digital Image Processing (DIP)**: 
+  * **Digital Image Processing (DIP)**: 
     * **Keywords**: Spatial Filtering, Frequency Filtering, Image Restoration and Reconstruction, Color Processing, Image compression, Morphological Image Processing, Image Segmentation, 
     * **References**:
       * [1] Digital Image Processing, Gonzalez and Woods
 
-    * **Digital Signal Processing (DSP)**: 
+  * **Digital Signal Processing (DSP)**: 
     * **Keywords**: Discrete-Time Signals and Systems
     * **References**:
       * [1] Discrete Time Signal Processing 2nd Ed, Alan V. Oppenheim, Ronald W. Schafer
 	  
-    * **Statiestical pattern recognition**: 
+  * **Statiestical pattern recognition**: 
     * **Keywords**: Bayesian decision theory, Maximum Likelihood Estimation, Nonparametric Methods, Linear Discriminant Functions, 
     * **References**:
       * [1] Pattern Classification, Richard O. Duda, David G. Stork, Peter E. Hart
 	 
-    * **Statiestics**: 
+  * **Statiestics**: 
     * **Keywords**: 
     * **References**:
       * [1] 
